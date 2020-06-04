@@ -43,7 +43,7 @@ if (file.exists(netrc) == FALSE || grepl("urs.earthdata.nasa.gov", readLines(net
 # listed per line. Here we show examples of each of the three ways to download files.
 # **IMPORTANT: be sure to update the links for the specific files you are interested in downloading.
 
-# 1. Single file (this is just an example link, replace with your desired file to download):
+# 1. Single file (this is just an example link for South Africa):
 files <- "https://e4ftl01.cr.usgs.gov/MOLT/MOD13A3.006/2020.03.01/MOD13A3.A2020061.h20v12.006.2020100130510.hdf"
 
 # 2. List of files (these are just example links, replace with your desired files to download:
