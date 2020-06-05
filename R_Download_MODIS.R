@@ -43,12 +43,19 @@ if (file.exists(netrc) == FALSE || grepl("urs.earthdata.nasa.gov", readLines(net
 # listed per line. Here we show examples of each of the three ways to download files.
 # **IMPORTANT: be sure to update the links for the specific files you are interested in downloading.
 
-# 1. Single file (this is just an example link for South Africa):
-files <- "https://e4ftl01.cr.usgs.gov/MOLT/MOD13A3.006/2020.03.01/MOD13A3.A2020061.h20v12.006.2020100130510.hdf"
+# 1. Single file (this is just an example link, replace with your desired file to download):
+#files <- "https://e4ftl01.cr.usgs.gov/MOLT/MOD13A3.006/2020.03.01/MOD13A3.A2020061.h20v12.006.2020100130510.hdf"
 
-# 2. List of files (these are just example links, replace with your desired files to download:
-#files <- c("https://e4ftl01.cr.usgs.gov/MOLA/MYD09GA.006/2002.07.06/MYD09GA.A2002187.h10v04.006.2015149103018.hdf",
-#           "https://e4ftl01.cr.usgs.gov/MOLT/MOD11A1.006/2000.03.09/MOD11A1.A2000069.h00v08.006.2015057070313.hdf")
+# 2. List of files (links in extent of Thuringia for MOD13A3):
+files <- c("https://e4ftl01.cr.usgs.gov//MODV6_Cmp_B/MOLT/MOD13A3.006/2020.03.01/MOD13A3.A2020061.h18v03.006.2020100131933.hdf",
+           "https://e4ftl01.cr.usgs.gov//MODV6_Cmp_B/MOLT/MOD13A3.006/2020.03.01/MOD13A3.A2020061.h18v04.006.2020100131914.hdf",
+           "https://e4ftl01.cr.usgs.gov//MODV6_Cmp_B/MOLT/MOD13A3.006/2020.04.01/MOD13A3.A2020092.h18v04.006.2020130020050.hdf",
+           "https://e4ftl01.cr.usgs.gov//MODV6_Cmp_B/MOLT/MOD13A3.006/2020.04.01/MOD13A3.A2020092.h18v03.006.2020130015736.hdf")
+
+# Thuringia Extent:
+#   BBox (SW): 9.5 E, 49.5 N
+#   BBox (NO): 12.5 E, 50.5 N
+
 
 # 3. Textfile containing links (just an example, replace with your text file location):
 #files <- readLines("C:/datapool_downloads/URL_file_list.txt", warn = FALSE)
