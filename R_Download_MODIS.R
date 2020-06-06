@@ -1,11 +1,12 @@
 # ------------------------------------------------------------------------------------------------ #
-# How to Access the LP DAAC Data Pool with R
+# Tool to Access the LP DAAC Data Pool with R
 # The following R code example demonstrates how to configure a connection to download data from an
 # Earthdata Login enabled server, specifically the LP DAAC Data Pool.
 # ------------------------------------------------------------------------------------------------ #
 # Author: Cole Krehbiel
-# Last Updated: 11/14/2019
+# Modifided by: Marlin Mueller & Jonas Ziemer
 # ------------------------------------------------------------------------------------------------ #
+
 # Check for required packages, install if not previously installed
 if ("sys" %in% rownames(installed.packages()) == FALSE) {install.packages("sys")}
 if ("getPass" %in% rownames(installed.packages()) == FALSE) { install.packages("getPass")}
@@ -15,7 +16,9 @@ if ("httr" %in% rownames(installed.packages()) == FALSE) { install.packages("htt
 library(sys)
 library(getPass)
 library(httr)
+
 # ---------------------------------SET UP ENVIRONMENT--------------------------------------------- #
+
 # IMPORTANT: Update the line below if you want to download to a different directory (ex: "c:/data/")
 dl_dir <- Sys.getenv("HOME")                                 # Set dir to download files to
 setwd(dl_dir)                                                # Set the working dir to the dl_dir
@@ -24,6 +27,7 @@ if (usr == "") {usr = Sys.getenv("HOME")}                    # If no user profil
 netrc <- file.path(usr,'.netrc', fsep = .Platform$file.sep)  # Path to netrc file
 
 # ------------------------------------CREATE .NETRC FILE------------------------------------------ #
+
 # If you already have a .netrc file with your Earthdata Login credentials stored in your home
 # directory, this portion will be skipped. Otherwise you will be prompted for your NASA Earthdata
 # Login Username/Password and a netrc file will be created to store your credentials (in home dir)
@@ -38,6 +42,7 @@ if (file.exists(netrc) == FALSE || grepl("urs.earthdata.nasa.gov", readLines(net
 }
 
 # ---------------------------CONNECT TO DATA POOL AND DOWNLOAD FILES------------------------------ #
+
 # Below, define either a single link to a file for download, a list of links, or a text file
 # containing links to the desired files to download. For a text file, there should be 1 file link
 # listed per line. Here we show examples of each of the three ways to download files.
