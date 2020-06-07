@@ -77,6 +77,9 @@ for (i in 1:length(dirs)) {
         
         # ------------------------REPROJECTION OF UNPROJECTED RASTER FILES------------------------ #
         
+        ## for further information visit...
+        ## https://gis.stackexchange.com/questions/154276/reprojecting-raster-from-lat-lon-to-utm-in-r
+        
         # Create RasterLayer object
         r <- raster(paste0(outfile))
         
