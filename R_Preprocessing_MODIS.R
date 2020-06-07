@@ -27,7 +27,7 @@ workDir = "F:/411"
 setwd(workDir)
 
 
-#List for all hdf files
+# List for all hdf files
 dirs <- dir()[file.info(dir())$isdir]
 
 # ----------------------------CONVERSION INTO GEOTIFFS AND REPROJECTION---------------------------- #
@@ -36,27 +36,27 @@ for (i in 1:length(dirs)) {
   
   setwd(paste0(workDir,"/",dirs[i]))
   
-  #Dateiliste aller Hdf im Verzeichnis
+  # List of all hdfs in the directory
   files <- list.files(pattern = "hdf$")
   dir.create("GeoTIFF",showWarnings = FALSE)
   
-  #Produktdateinamen ohne Endung und Erstellungsdatum
+  # Layernames without raster types and date
   files0 <- substr(gsub(".hdf", "", files), 1, nchar(gsub(".hdf", "", files)) - 14)
   
-  #Subdatasetnamen speichern
+  # Save names of subdatasets
   sds_names <- sub('.*\\:', '', get_subdatasets(files[1]))
   print(sds_names)
   
-  #Umwandeln in geotiff, nach Namensliste:
+  # Conversion into geotiff, corresponding to list of layer names
   stand <- sprintf("Verzeichnis: %s", dirs[i])
   print(stand)
   
-  #Liste der relevanten SDS anlegen:
+  # List of relevant SDS
   vars <-
     #c("LST_Day_1km","QC_Day","Day_view_angl","Clear_day_cov","Clear_sky_days","LST_Night_1km","QC_Night","Night_view_angl","Clear_night_cov","Clear_sky_nights")
     c("1 km monthly NDVI", "1 km monthly VI Quality")
 
-  #Für jedes Subdataset(Hier nur maximal SDS 4 benötigt, ansonsten --> 1:length(sds_names))
+  # For every SDS (here max. SDS 4 necessary, else --> 1:length(sds_names))
   for (a in 1:length("NDVI")) {
     sds1 <- sds_names[a]
     if (sds1 %in% vars)
