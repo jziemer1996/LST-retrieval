@@ -7,6 +7,8 @@
 
 # Load necessary packages into R
 library(gdalUtils)
+library(raster)
+library(sp)
 # require(raster)
 # require(sp)
 # require(MODIS)
@@ -27,18 +29,6 @@ setwd(workDir)
 
 #List for all hdf files
 dirs <- dir()[file.info(dir())$isdir]
-
-# ---------------------------------SET REPROJECTION PARAMETERS ------------------------------------ #
-
-#Start and end projection:
-frm.srs = "+proj=sinu +lon_0=0 +x_0=0 +y_0=0 +a=6371007.181 +b=6371007.181 +units=m -r cubic+no_defs" # original HDF SRS
-to.srs = "+proj=longlat +datum=WGS84 +no_defs" # desired GeoTIFF SRS
-
-#Geographic Coordinates (Latlon WGS84)
-#to.srs = "EPSG:4326" #http://spatialreference.org/ref/epsg/4326/
-
-#UTM Zone 32N EPSG:25832
-#to.srs = "EPSG:32632" #http://spatialreference.org/ref/epsg/32632/
 
 # ----------------------------CONVERSION INTO GEOTIFFS AND REPROJECTION---------------------------- #
 
@@ -67,7 +57,7 @@ for (i in 1:length(dirs)) {
     c("1 km monthly NDVI", "1 km monthly VI Quality")
 
   #Für jedes Subdataset(Hier nur maximal SDS 4 benötigt, ansonsten --> 1:length(sds_names))
-  for (a in 1:length(sds_names)) {
+  for (a in 1:length("NDVI")) {
     sds1 <- sds_names[a]
     if (sds1 %in% vars)
     {
@@ -85,15 +75,23 @@ for (i in 1:length(dirs)) {
         gdal_translate(files[b], paste0(getwd(), outdir, outfile), sd_index = a)
         setwd(paste0(getwd(), "/GeoTIFF"))
         
-        ### Switch between type of projection (see above) ###
+        # ------------------------REPROJECTION OF UNPROJECTED RASTER FILES------------------------ #
         
-        ### Doesnt work yet ###
+        # Create RasterLayer object
+        r <- raster(paste0(outfile))
         
-       #gdalwarp(paste0(outfile),paste0(outname, "_utm32_wgs84.tif"), s_srs = frm.srs, t_srs = to.srs,
-        gdalwarp(paste0(outfile),paste0(outname, "_latlon_wgs84.tif"), s_srs = frm.srs, t_srs = to.srs,
-                 srcnodata = -3000, dstnodata = -99999, tr=c(1000,1000), r="bilinear", overwrite = T)
+        # Define the Proj.4 spatial reference 
+        sr <- "+proj=longlat +datum=WGS84 +no_defs" # desired GeoTIFF SRS
         
-        #file.remove(outfile) ???????????????????????????????? WHY ???????????????????????????????????????????
+        # Project Raster
+        projected_raster <- projectRaster(r, crs = sr)
+        
+        # Write the RasterLayer to disk (See datatype documentation for other formats)
+        writeRaster(projected_raster, filename=paste0(outname, "_latlon_wgs84.tif"), datatype='FLT4S', overwrite=TRUE)
+        
+        # Remove unprojected files in working directory
+        file.remove(outfile)
+
       }
     }
   }
