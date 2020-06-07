@@ -59,10 +59,10 @@ for (i in 1:length(dirs)) {
   # List of relevant SDS
   vars <-
     #c("LST_Day_1km","QC_Day","Day_view_angl","Clear_day_cov","Clear_sky_days","LST_Night_1km","QC_Night","Night_view_angl","Clear_night_cov","Clear_sky_nights")
-    c("1 km monthly NDVI", "1 km monthly VI Quality")
+    c("LST_Day_1km")
 
   # For every SDS (here max. SDS 4 necessary, else --> 1:length(sds_names))
-  for (a in 1:length("NDVI")) {
+  for (a in 1:length(sds_names)) {
     sds1 <- sds_names[a]
     if (sds1 %in% vars)
     {
