@@ -1,10 +1,13 @@
 # ------------------------------------------------------------------------------------------------ #
 # Tool to preprocess downloaded MODIS data for LST analysis
+# ------------------------------------------------------------------------------------------------ #
 # - 1st part: Convert (GeoTIFF) and reproject (LatLon or UTM) the downloaded MODIS files (hdf).
-# - 2nd part: Subsetting the MODIS files to the extent of Thuringia.
+# - 2nd part: Rescaling of LST values from Kelvin to Celsius.
+# - 3rd part: Subsetting the MODIS files to the extent of Thuringia.
 # ------------------------------------------------------------------------------------------------ #
 # Author: Sandra Bauer
-# Modifided by: Marlin Mueller & Jonas Ziemer
+# Modified by: Marlin Mueller & Jonas Ziemer
+# ------------------------------------------------------------------------------------------------ #
 # ------------------------------------------------------------------------------------------------ #
 
 # Load necessary packages into R
@@ -25,7 +28,7 @@ library(rgeos)
 
 
 ## Jonas working directory
-workDir = "F:/411"
+workDir = "F:/411/"
 ## Marlin working directory
 # workDir = ""
 
@@ -105,12 +108,65 @@ for (i in 1:length(dirs)) {
   }
 }
 
+# ----------------------------------RESCALING FROM KELVIN TO CELSIUS----------------------------------- #
+
+## Jonas working directory
+workDir = "F:/411/LST/"
+## Marlin working directory
+# workDir = ""
+
+# Global directory for the used variables
+setwd(workDir)
+
+# List of all directories
+dirs <- dir()[file.info(dir())$isdir]
+
+
+# Configure output resolution and desired resampling method
+tr=c(1000,1000)
+r="bilinear" # "nearest"|"bilinear"|"cubic"|"cubicspline"|"lanczos"|"average"|"mode"
+
+for (i in 1:length(dirs)) {
+  
+  # Change directory to current used variable
+  setwd(paste0(workDir,dirs[i]))
+  stand <- sprintf("Verzeichnis: %s", dirs[i])
+  print(stand)
+  
+  # Save list of all .tif files
+  files <- list.files(pattern = "*LST*")
+  
+  # Create new directory
+  dir.create(paste0(getwd(),("/"),"scaled"),showWarnings = FALSE)
+  
+  #######  Rescaling to Celsius ######
+
+   for (a in 1:length(files)) {
+     
+     # Load in raster files
+     file <- raster(files[a])
+     
+     # Conversion of Kelvin into Celsius 
+     file_scaled_to_celsius <- calc(file, fun=function(x){x-273.15})
+     
+     # Print progress
+     datei <- sprintf("Verzeichnis: %s Datei: %s von %s", dirs[i],a,length(files))
+     print(datei)
+     
+     # Convert and write new tif-file 
+     outtif_celsius <- paste0(getwd(),("/"),"scaled","/",file_path_sans_ext(files[a]),"_","celsius",".tif")
+     writeRaster(file_scaled_to_celsius, filename=outtif_celsius, format="GTiff", overwrite=TRUE)
+ 
+   }
+ }
+
+
 # Mark following Codeblock and Press Ctrl+Shft+C to make use of the subsetting functionality
 
 # Doesn't work yet because Shapefile is missing
 
 # # ----------------------------SUBSETTING FILES TO THURINGIA EXTENT---------------------------- #
-# 
+#
 # ### Schritte:
 # ###  1. Verzeichnisliste einlesen (dirs)
 # ###  2. in jedem Verzeichnis in den Geotif Ordner wechseln (dort, wo die Produkte als komplette große Szenen liegen)
@@ -120,33 +176,33 @@ for (i in 1:length(dirs)) {
 # ###    nein  ---> Text ausgeben und mit nächsten Untersuchungsgebiet testen
 # ###  5. Ergebnis: insgesamt 12 neue Unterordner Sortiert nach Untersuchungsgebiet und netcdf bzw. geotiff
 # ###############################################################################################
-# 
-# 
+#
+#
 # ######### Shapefiles einlesen #############
-# 
+#
 # ##### Fuer alle shapefiles: ####
-# 
+#
 # Thuringia <- readOGR("E:/Analysis/COKAP/MODIS/thuringia_boundary_utm32_wgs84_envelope.shp")
 # #Thuringia <- readOGR("E:/Analysis/COKAP/MODIS/thuringia_boundary_utm32_wgs84_envelope.shp")
 # #AGC <- readOGR("F:/Harry/Shapefiles/AGC_5x5km_buffer_5km_wgs84.shp")
-# 
+#
 # #shapes <- as.list.data.frame(c(VWN,AGC,MLP,SKZ,MDB,BBR))
 # shapes <- as.list.data.frame(c(Thuringia))
-# 
+#
 # #shapes_n <- as.list.data.frame(c("VWN","AGC","MLP","SKZ","MDB","BBR"))
 # shapes_n <- as.list.data.frame(c("Thuringia"))
-# 
+#
 # for (i in 1:length(dirs)) {
-# 
+#
 #   #in den Geotiff Ordner der jeweiligen Variable wechseln
 #   setwd(paste0(workDir,dirs[i],"/GeoTIFF"))
 #   stand <- sprintf("Verzeichnis: %s", dirs[i])
 #   print(stand)
-# 
+#
 #   #Liste aller .tif Dateien im Verzeichnis speichern
 #   files <- list.files(pattern = "tif$")
 #   #######  Subsetting als netcdf / geotiff ######
-# 
+#
 #   for (a in 1:length(files)) {
 #     ## Volle Szene rastern
 #     bigscene <- raster(files[a])
@@ -156,7 +212,7 @@ for (i in 1:length(dirs)) {
 #     crs(big_e_sp) <- crs(bigscene)
 #     datei <- sprintf("Verzeichnis: %s Datei: %s von %s", dirs[i],a,length(files))
 #     print(datei)
-# 
+#
 #     for (x in 1:length(shapes)) {
 #       shape <- as(extent(bbox(shapes[[x]])), 'SpatialPolygons')
 #       crs(shape) <- crs(bigscene)
@@ -175,4 +231,7 @@ for (i in 1:length(dirs)) {
 #     }
 #   }
 # }
+
+
+
 
