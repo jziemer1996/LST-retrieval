@@ -165,7 +165,7 @@ for (i in 1:length(dirs)) {
 
 # Doesn't work yet because Shapefile is missing
 
-# # ----------------------------SUBSETTING FILES TO THURINGIA EXTENT---------------------------- #
+# ---------------------------------SUBSETTING FILES TO THURINGIA EXTENT---------------------------------- #
 #
 # ### Schritte:
 # ###  1. Verzeichnisliste einlesen (dirs)
