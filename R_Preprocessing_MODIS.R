@@ -1,14 +1,17 @@
 # ------------------------------------------------------------------------------------------------ #
 # Tool to preprocess downloaded MODIS data for LST analysis
-# ------------------------------------------------------------------------------------------------ #
+# ------------------------------------------------------------------------------------------------- #
 # - 1st part: Convert (GeoTIFF) and reproject (LatLon or UTM) the downloaded MODIS files (hdf).
 # - 2nd part: Rescaling of LST values from Kelvin to Celsius.
 # - 3rd part: Subsetting the MODIS files to the extent of Thuringia.
-# ------------------------------------------------------------------------------------------------ #
+# ------------------------------------------------------------------------------------------------- #
 # Author: Sandra Bauer
 # Modified by: Marlin Mueller & Jonas Ziemer
-# ------------------------------------------------------------------------------------------------ #
-# ------------------------------------------------------------------------------------------------ #
+# ------------------------------------------------------------------------------------------------- #
+
+
+# -------------------------------------------1st part---------------------------------------------- #
+# ----------------------------CONVERSION INTO GEOTIFFS AND REPROJECTION---------------------------- #
 
 # Load necessary packages into R
 library(gdalUtils)
@@ -21,7 +24,7 @@ library(rgeos)
 
 # require(MODIS)
 
-# ------------------------------------SET UP ENVIRONMENT------------------------------------------ #
+# ------------------------------------SET UP ENVIRONMENT------------------------------------------- #
 
 ## still needs to copy all downloaded hdf files in your desired working folder because 'R_Download_MODIS.R'
 ## writes it to home directory as default because setting the desired download directory doesn't work yet!
@@ -108,7 +111,9 @@ for (i in 1:length(dirs)) {
   }
 }
 
-# ----------------------------------RESCALING FROM KELVIN TO CELSIUS----------------------------------- #
+
+# -------------------------------------------2nd part---------------------------------------------- #
+# ---------------------------------RESCALING FROM KELVIN TO CELSIUS-------------------------------- #
 
 # Needs to change to the directory of the corresponding varibale (e.g. LST, NDVI a.s.o.)
 ## Jonas working directory
@@ -166,8 +171,10 @@ for (i in 1:length(dirs)) {
 
 # Doesn't work yet because Shapefile is missing
 
-# ---------------------------------SUBSETTING FILES TO THURINGIA EXTENT---------------------------------- #
-#
+
+# -------------------------------------------3rd part---------------------------------------------- #
+# ------------------------------SUBSETTING FILES TO THURINGIA EXTENT------------------------------- #
+
 # ### Schritte:
 # ###  1. Verzeichnisliste einlesen (dirs)
 # ###  2. in jedem Verzeichnis in den Geotif Ordner wechseln (dort, wo die Produkte als komplette große Szenen liegen)
