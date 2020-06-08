@@ -110,12 +110,13 @@ for (i in 1:length(dirs)) {
 
 # ----------------------------------RESCALING FROM KELVIN TO CELSIUS----------------------------------- #
 
+# Needs to change to the directory of the corresponding varibale (e.g. LST, NDVI a.s.o.)
 ## Jonas working directory
 workDir = "F:/411/LST/"
 ## Marlin working directory
 # workDir = ""
 
-# Global directory for the used variables
+# Directory of the corresponding variables
 setwd(workDir)
 
 # List of all directories
