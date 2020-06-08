@@ -52,12 +52,12 @@ if (file.exists(netrc) == FALSE || grepl("urs.earthdata.nasa.gov", readLines(net
 #files <- "https://e4ftl01.cr.usgs.gov/MOLT/MOD13A3.006/2020.03.01/MOD13A3.A2020061.h20v12.006.2020100130510.hdf"
 
 # 2. List of files (links in extent of Thuringia for MOD11A1 (LST) for 01.06.- 03.06.20):
-files <- c("https://e4ftl01.cr.usgs.gov//MODV6_Dal_E/MOLT/MOD11A1.006/2020.06.01/MOD11A1.A2020153.h18v04.006.2020155214350.hdf",
-           "https://e4ftl01.cr.usgs.gov//MODV6_Dal_E/MOLT/MOD11A1.006/2020.06.01/MOD11A1.A2020153.h18v03.006.2020155214320.hdf",
-           "https://e4ftl01.cr.usgs.gov//MODV6_Dal_E/MOLT/MOD11A1.006/2020.06.02/MOD11A1.A2020154.h18v03.006.2020155220410.hdf",
-           "https://e4ftl01.cr.usgs.gov//MODV6_Dal_E/MOLT/MOD11A1.006/2020.06.02/MOD11A1.A2020154.h18v04.006.2020155220419.hdf",
-           "https://e4ftl01.cr.usgs.gov//MODV6_Dal_E/MOLT/MOD11A1.006/2020.06.03/MOD11A1.A2020155.h18v04.006.2020156085233.hdf",
-           "https://e4ftl01.cr.usgs.gov//MODV6_Dal_E/MOLT/MOD11A1.006/2020.06.03/MOD11A1.A2020155.h18v03.006.2020156085324.hdf")
+# files <- c("https://e4ftl01.cr.usgs.gov//MODV6_Dal_E/MOLT/MOD11A1.006/2020.06.01/MOD11A1.A2020153.h18v04.006.2020155214350.hdf",
+#            "https://e4ftl01.cr.usgs.gov//MODV6_Dal_E/MOLT/MOD11A1.006/2020.06.01/MOD11A1.A2020153.h18v03.006.2020155214320.hdf",
+#            "https://e4ftl01.cr.usgs.gov//MODV6_Dal_E/MOLT/MOD11A1.006/2020.06.02/MOD11A1.A2020154.h18v03.006.2020155220410.hdf",
+#            "https://e4ftl01.cr.usgs.gov//MODV6_Dal_E/MOLT/MOD11A1.006/2020.06.02/MOD11A1.A2020154.h18v04.006.2020155220419.hdf",
+#            "https://e4ftl01.cr.usgs.gov//MODV6_Dal_E/MOLT/MOD11A1.006/2020.06.03/MOD11A1.A2020155.h18v04.006.2020156085233.hdf",
+#            "https://e4ftl01.cr.usgs.gov//MODV6_Dal_E/MOLT/MOD11A1.006/2020.06.03/MOD11A1.A2020155.h18v03.006.2020156085324.hdf")
 
 # Thuringia Extent:
 #   BBox (SW): 9.5 E, 49.5 N
@@ -65,7 +65,7 @@ files <- c("https://e4ftl01.cr.usgs.gov//MODV6_Dal_E/MOLT/MOD11A1.006/2020.06.01
 
 
 # 3. Textfile containing links (just an example, replace with your text file location):
-#files <- readLines("C:/datapool_downloads/URL_file_list.txt", warn = FALSE)
+files <- readLines("C:/Users/jz199/Documents/Studium/Master/2. Semester/Vorlesungsmitschriften/GEO411 - Landschaftsmanagement und Fernerkundung/MODIS_files.txt", warn = FALSE)
 
 # Loop through all files
 for (i in 1:length(files)) {
