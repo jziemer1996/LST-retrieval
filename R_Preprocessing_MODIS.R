@@ -2,16 +2,17 @@
 # Tool to preprocess downloaded MODIS data for LST analysis
 # ------------------------------------------------------------------------------------------------- #
 # - 1st part: Convert (GeoTIFF) and reproject (LatLon or UTM) the downloaded MODIS files (hdf).
-# - 2nd part: Rescaling of LST values from Kelvin to Celsius.
-# - 3rd part: Subsetting the MODIS files to the extent of Thuringia.
+# - 2nd part: Subsetting the MODIS files to the extent of Thuringia.
+# - 3rd part: Rescaling of LST values from Kelvin to Celsius.
 # ------------------------------------------------------------------------------------------------- #
 # Author: Sandra Bauer
 # Modified by: Marlin Mueller & Jonas Ziemer
+# FSU JENA, 2020
 # ------------------------------------------------------------------------------------------------- #
 
 
-# -------------------------------------------1st part---------------------------------------------- #
-# ----------------------------CONVERSION INTO GEOTIFFS AND REPROJECTION---------------------------- #
+###------------------------------------------1st part---------------------------------------------###
+###---------------------------CONVERSION INTO GEOTIFFS AND REPROJECTION---------------------------###
 
 # Load necessary packages into R
 library(gdalUtils)
@@ -22,21 +23,16 @@ library(ncdf4)
 library(tools)
 library(rgeos)
 
-# require(MODIS)
-
 # ------------------------------------SET UP ENVIRONMENT------------------------------------------- #
-
-## still needs to copy all downloaded hdf files in your desired working folder because 'R_Download_MODIS.R'
-## writes it to home directory as default because setting the desired download directory doesn't work yet!
-
 
 ## Jonas working directory
 workDir = "F:/411/"
+
 ## Marlin working directory
 # workDir = ""
 
+# Set working directory
 setwd(workDir)
-
 
 # List for all hdf files
 dirs <- dir()[file.info(dir())$isdir]
@@ -112,21 +108,94 @@ for (i in 1:length(dirs)) {
 }
 
 
-# -------------------------------------------2nd part---------------------------------------------- #
-# ---------------------------------RESCALING FROM KELVIN TO CELSIUS-------------------------------- #
+###------------------------------------------2nd part---------------------------------------------###
+###-----------------------------SUBSETTING FILES TO THURINGIA EXTENT------------------------------###
 
-# Needs to change to the directory of the corresponding varibale (e.g. LST, NDVI a.s.o.)
+
+# ------------------------------------READ IN THURINGIA SHAPEFILE---------------------------------- #
+
+Thuringia <- readOGR("C:/Users/jz199/Documents/Studium/Master/2. Semester/Vorlesungsmitschriften/GEO411 - Landschaftsmanagement und Fernerkundung/S3_Prozesskette/06_AP4100/Code/shapes/thuringia.shp")
+
+shapes <- as.list.data.frame(c(Thuringia))
+
+shapes_n <- as.list.data.frame(c("Thuringia"))
+
+# ------------------------------------SET UP ENVIRONMENT------------------------------------------- #
+
 ## Jonas working directory
 workDir = "F:/411/LST/"
+
 ## Marlin working directory
 # workDir = ""
 
-# Directory of the corresponding variables
+# Directory of the corresponding variable
 setwd(workDir)
 
 # List of all directories
 dirs <- dir()[file.info(dir())$isdir]
 
+for (i in 1:length(dirs)) {
+  
+  # Corresponding Geotiff directory
+  setwd(paste0(workDir,dirs[i]))
+  stand <- sprintf("Verzeichnis: %s", dirs[i])
+  print(stand)
+  
+  # Save list of all tif-files in directory
+  files <- list.files(pattern = "tif$")
+  
+  # ----------SUBSETTING FILES AND DELETE THE ONES WHICH ARE OUT OF THE THURINGIAN BORDERS-------- #
+  
+  for (a in 1:length(files)) {
+    
+    # Raster of full scene
+    bigscene <- raster(files[a])
+    
+    # Raster polygon with extent of Thuringian borders
+    big_extent <- extent(bigscene)
+    big_e_sp <- as(big_extent, 'SpatialPolygons')
+    crs(big_e_sp) <- crs(bigscene)
+    datei <- sprintf("Verzeichnis: %s Datei: %s von %s", dirs[i],a,length(files))
+    print(datei)
+    
+    for (x in 1:length(shapes)) {
+      shape <- as(extent(bbox(shapes[[x]])), 'SpatialPolygons')
+      crs(shape) <- crs(bigscene)
+      
+      # Just take the scenes which overlap with Thuringian borders
+      if (gIntersects(shapes[[x]],big_e_sp)) {
+        
+        dir.create(paste0(getwd(),("/"),shapes_n[x]))
+        outtif <- paste0(getwd(),("/"),shapes_n[x],"/",file_path_sans_ext(files[a]),"_",shapes_n[x],".tif")
+        writeRaster(crop(bigscene,shape), filename=outtif, format="GTiff", overwrite=TRUE)
+      }
+      else {
+        print("Does not overlap!")
+      }
+    }
+  }
+}
+
+
+###------------------------------------------3rd part---------------------------------------------###
+###--------------------------------RESCALING FROM KELVIN TO CELSIUS-------------------------------###
+
+
+# ------------------------------------SET UP ENVIRONMENT------------------------------------------- #
+
+## Jonas working directory
+workDir = "F:/411/LST/GeoTIFF/"
+
+## Marlin working directory
+# workDir = ""
+
+# Directory of the corresponding variable
+setwd(workDir)
+
+# List of all directories
+dirs <- dir()[file.info(dir())$isdir]
+
+# -------------------------------CONFIGURE OUTPUT PARAMETERS--------------------------------------- #
 
 # Configure output resolution and desired resampling method
 tr=c(1000,1000)
@@ -145,7 +214,7 @@ for (i in 1:length(dirs)) {
   # Create new directory
   dir.create(paste0(getwd(),("/"),"scaled"),showWarnings = FALSE)
   
-  #######  Rescaling to Celsius ######
+  #--------------------------------RESCALING FROM KELVIN TO CELSIUS-------------------------------#
 
    for (a in 1:length(files)) {
      
@@ -166,80 +235,7 @@ for (i in 1:length(dirs)) {
    }
  }
 
-
-# Mark following Codeblock and Press Ctrl+Shft+C to make use of the subsetting functionality
-
-# Doesn't work yet because Shapefile is missing
-
-
-# -------------------------------------------3rd part---------------------------------------------- #
-# ------------------------------SUBSETTING FILES TO THURINGIA EXTENT------------------------------- #
-
-# ### Schritte:
-# ###  1. Verzeichnisliste einlesen (dirs)
-# ###  2. in jedem Verzeichnis in den Geotif Ordner wechseln (dort, wo die Produkte als komplette große Szenen liegen)
-# ###  3. jeweilige Szene in Raster konvertieren
-# ###  4. Check ob Untersuchungsgebiet in Szene liegt
-# ###    ja   ---> Untersuchungsgebiet ausschneiden / geotiff/netcdf erstellen
-# ###    nein  ---> Text ausgeben und mit nächsten Untersuchungsgebiet testen
-# ###  5. Ergebnis: insgesamt 12 neue Unterordner Sortiert nach Untersuchungsgebiet und netcdf bzw. geotiff
-# ###############################################################################################
-#
-#
-# ######### Shapefiles einlesen #############
-#
-# ##### Fuer alle shapefiles: ####
-#
-# Thuringia <- readOGR("E:/Analysis/COKAP/MODIS/thuringia_boundary_utm32_wgs84_envelope.shp")
-# #Thuringia <- readOGR("E:/Analysis/COKAP/MODIS/thuringia_boundary_utm32_wgs84_envelope.shp")
-# #AGC <- readOGR("F:/Harry/Shapefiles/AGC_5x5km_buffer_5km_wgs84.shp")
-#
-# #shapes <- as.list.data.frame(c(VWN,AGC,MLP,SKZ,MDB,BBR))
-# shapes <- as.list.data.frame(c(Thuringia))
-#
-# #shapes_n <- as.list.data.frame(c("VWN","AGC","MLP","SKZ","MDB","BBR"))
-# shapes_n <- as.list.data.frame(c("Thuringia"))
-#
-# for (i in 1:length(dirs)) {
-#
-#   #in den Geotiff Ordner der jeweiligen Variable wechseln
-#   setwd(paste0(workDir,dirs[i],"/GeoTIFF"))
-#   stand <- sprintf("Verzeichnis: %s", dirs[i])
-#   print(stand)
-#
-#   #Liste aller .tif Dateien im Verzeichnis speichern
-#   files <- list.files(pattern = "tif$")
-#   #######  Subsetting als netcdf / geotiff ######
-#
-#   for (a in 1:length(files)) {
-#     ## Volle Szene rastern
-#     bigscene <- raster(files[a])
-#     ##dazu ein polygon mit Extent erstellen
-#     big_extent <- extent(bigscene)
-#     big_e_sp <- as(big_extent, 'SpatialPolygons')
-#     crs(big_e_sp) <- crs(bigscene)
-#     datei <- sprintf("Verzeichnis: %s Datei: %s von %s", dirs[i],a,length(files))
-#     print(datei)
-#
-#     for (x in 1:length(shapes)) {
-#       shape <- as(extent(bbox(shapes[[x]])), 'SpatialPolygons')
-#       crs(shape) <- crs(bigscene)
-#       ## Nur die Shapes aus Bigscene ausschneiden, die auch überlappen!! ##
-#       if (gIntersects(shapes[[x]],big_e_sp)) {
-#         #dir.create(paste0(getwd(),("/"),shapes_n[x]," ","netcdf"))
-#         dir.create(paste0(getwd(),("/"),shapes_n[x]))
-#         outtif <- paste0(getwd(),("/"),shapes_n[x],"/",file_path_sans_ext(files[a]),"_",shapes_n[x],".tif")
-#         #outcdf <- paste0(getwd(),("/"),shapes_n[x]," ","netcdf/",file_path_sans_ext(files[a]),".nc")
-#         writeRaster(crop(bigscene,shape), filename=outtif, format="GTiff", overwrite=TRUE)
-#         #writeRaster(crop(bigscene,shape), filename=outcdf, format="CDF", overwrite=TRUE)
-#       }
-#       else {
-#         print("Does not overlap!")
-#       }
-#     }
-#   }
-# }
-
-
+###--------------------------------------------------------------------------------------------###
+###--------------------------------------------------------------------------------------------###
 
 
