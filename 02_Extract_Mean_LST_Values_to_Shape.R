@@ -18,8 +18,11 @@ suppressMessages(library(foreach))
 message("Setting basic variables...")
 #####################################
 
-#working directory
-wdir="E:/Analysis/COKAP/"  #"/geonfs02_vol1/c4bech/Africa/"
+## Jonas working directory
+workDir = "F:/411/LST/GeoTIFF/"
+
+## Marlin working directory
+# workDir = ""
 
 #test site
 site="Analyses"
