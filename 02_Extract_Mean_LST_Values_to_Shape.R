@@ -19,25 +19,25 @@ message("Setting basic variables...")
 #####################################
 
 ## Jonas working directory
-workDir = "F:/411/LST/GeoTIFF/"
+wdir = "C:/Users/jz199/Documents/Studium/Master/2. Semester/Vorlesungsmitschriften/GEO411 - Landschaftsmanagement und Fernerkundung/Auszug_Daten_SandraBauer_MA/Auszug_Daten_SandraBauer_MA/"
 
 ## Marlin working directory
-# workDir = ""
+# wdir = ""
 
 #test site
 site="Analyses"
 
 #image data folder
-predictors="Renamed_Data" #predictors
+predictors="F:/411/LST/GeoTIFF/Thuringia/scaled/MOD11A1.A2020155.h18v03.006_LST_Day_1km_latlon_wgs84_Thuringia_celsius.tif" #predictors
 
 #reference data folder
-reference="Shapefiles"
+reference="C:/Users/jz199/Documents/Studium/Master/2. Semester/Vorlesungsmitschriften/GEO411 - Landschaftsmanagement und Fernerkundung/Auszug_Daten_SandraBauer_MA/Auszug_Daten_SandraBauer_MA/Stationen_Thüringen_Umland_3x3box.shp"
 
 #response variable
 response.type="Output"
 
 #reference data shapefile
-refdata="Klimastationen_Thueringen_v3_utm32_wgs84.shp"
+refdata="Klimastationen_Thueringen_MODIS.shp"
 
 # Altenburg_Rural_Dissolved.shp
 # Altenburg_Urban_Dissolved.shp
@@ -84,6 +84,7 @@ n.cores=4
 
 #load ancillary functions
 source(paste(wdir,site,"/01_FB_Functions.R", sep=""))
+#source(paste(wdir,"01_FB_Functions.R", sep=""))
 
 #################################
 message("Loading image data...")
