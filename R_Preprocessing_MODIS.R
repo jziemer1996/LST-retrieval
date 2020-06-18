@@ -14,6 +14,9 @@
 ###------------------------------------------1st part---------------------------------------------###
 ###---------------------------CONVERSION INTO GEOTIFFS AND REPROJECTION---------------------------###
 
+# set environment language to english
+Sys.setenv(LANG = "en")
+
 # Load necessary packages into R
 library(gdalUtils)
 library(raster)
@@ -26,10 +29,10 @@ library(rgeos)
 # ------------------------------------SET UP ENVIRONMENT------------------------------------------- #
 
 ## Jonas working directory
-workDir = "F:/411/"
+#workDir = "F:/411/"
 
 ## Marlin working directory
-# workDir = ""
+workDir = "F:/GEO411_data/MODIS_R_dir/"
 
 # Set working directory
 setwd(workDir)
@@ -114,7 +117,11 @@ for (i in 1:length(dirs)) {
 
 # ------------------------------------READ IN THURINGIA SHAPEFILE---------------------------------- #
 
-Thuringia <- readOGR("C:/Users/jz199/Documents/Studium/Master/2. Semester/Vorlesungsmitschriften/GEO411 - Landschaftsmanagement und Fernerkundung/S3_Prozesskette/06_AP4100/Code/shapes/thuringia.shp")
+## Pfad fuer Jonas:
+# Thuringia <- readOGR("C:/Users/jz199/Documents/Studium/Master/2. Semester/Vorlesungsmitschriften/GEO411 - Landschaftsmanagement und Fernerkundung/S3_Prozesskette/06_AP4100/Code/shapes/thuringia.shp")
+
+## Pfad fuer Marlin:
+Thuringia <- readOGR("F:/GEO411_data/MODIS_R_dir/shape/thuringia.shp")
 
 shapes <- as.list.data.frame(c(Thuringia))
 
@@ -123,10 +130,10 @@ shapes_n <- as.list.data.frame(c("Thuringia"))
 # ------------------------------------SET UP ENVIRONMENT------------------------------------------- #
 
 ## Jonas working directory
-workDir = "F:/411/LST/"
+# workDir = "F:/411/LST/"
 
 ## Marlin working directory
-# workDir = ""
+workDir = "F:/GEO411_data/MODIS_R_dir/Downloaded_HDFs/"
 
 # Directory of the corresponding variable
 setwd(workDir)
@@ -184,10 +191,10 @@ for (i in 1:length(dirs)) {
 # ------------------------------------SET UP ENVIRONMENT------------------------------------------- #
 
 ## Jonas working directory
-workDir = "F:/411/LST/GeoTIFF/"
+# workDir = "F:/411/LST/GeoTIFF/"
 
 ## Marlin working directory
-# workDir = ""
+workDir = "F:/GEO411_data/MODIS_R_dir/Downloaded_HDFs/GeoTIFF/"
 
 # Directory of the corresponding variable
 setwd(workDir)
