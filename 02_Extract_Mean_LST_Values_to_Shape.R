@@ -5,6 +5,9 @@
 #modify reference shapefile so that it contains only the column with the reference information
 #make leave out sample
 
+# set environment language to english
+Sys.setenv(LANG = "en")
+
 #####################################
 message("Loading required functions")
 #####################################
@@ -19,19 +22,27 @@ message("Setting basic variables...")
 #####################################
 
 ## Jonas working directory
-wdir = "C:/Users/jz199/Documents/Studium/Master/2. Semester/Vorlesungsmitschriften/GEO411 - Landschaftsmanagement und Fernerkundung/Auszug_Daten_SandraBauer_MA/Auszug_Daten_SandraBauer_MA/"
+# wdir = "C:/Users/jz199/Documents/Studium/Master/2. Semester/Vorlesungsmitschriften/GEO411 - Landschaftsmanagement und Fernerkundung/Auszug_Daten_SandraBauer_MA/Auszug_Daten_SandraBauer_MA/"
 
 ## Marlin working directory
-# wdir = ""
+wdir = "F:/GEO411_data/Daten_Sandra/original/"
 
 #test site
 site="Analyses"
 
 #image data folder
-predictors="F:/411/LST/GeoTIFF/Thuringia/scaled/MOD11A1.A2020155.h18v03.006_LST_Day_1km_latlon_wgs84_Thuringia_celsius.tif" #predictors
+## Jonas
+#predictors="F:/411/LST/GeoTIFF/Thuringia/scaled/MOD11A1.A2020155.h18v03.006_LST_Day_1km_latlon_wgs84_Thuringia_celsius.tif"
+
+## Marlin
+predictors="F:/GEO411_data/MODIS_R_dir/Downloaded_HDFs/GeoTIFF/Thuringia/scaled/MOD11A1.A2019001.h18v03.006_LST_Day_1km_latlon_wgs84_Thuringia_celsius.tif"
 
 #reference data folder
+## Jonas
 reference="C:/Users/jz199/Documents/Studium/Master/2. Semester/Vorlesungsmitschriften/GEO411 - Landschaftsmanagement und Fernerkundung/Auszug_Daten_SandraBauer_MA/Auszug_Daten_SandraBauer_MA/Stationen_Thüringen_Umland_3x3box.shp"
+
+## Marlin
+reference="F:/GEO411_data/Daten_Sandra/new/Stationen_Thüringen_Umland_3x3box.shp"
 
 #response variable
 response.type="Output"
@@ -74,7 +85,7 @@ refdata.column="FID"
 #targetres=1000
 
 #number of cores (up to 100)
-n.cores=4
+n.cores=12
 
 #full sample name
 #fullsample.name="_fullsample.RData"
