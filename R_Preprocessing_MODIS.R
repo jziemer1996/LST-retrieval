@@ -28,11 +28,9 @@ library(rgeos)
 
 # ------------------------------------SET UP ENVIRONMENT------------------------------------------- #
 
-## Jonas working directory
-#workDir = "F:/411/"
-
-## Marlin working directory
-workDir = "F:/GEO411_data/MODIS_R_dir/"
+## Working directory
+# Example workDir = "F:/411/"
+workDir = ""
 
 # Set working directory
 setwd(workDir)
@@ -117,11 +115,9 @@ for (i in 1:length(dirs)) {
 
 # ------------------------------------READ IN THURINGIA SHAPEFILE---------------------------------- #
 
-## Pfad fuer Jonas:
-# Thuringia <- readOGR("C:/Users/jz199/Documents/Studium/Master/2. Semester/Vorlesungsmitschriften/GEO411 - Landschaftsmanagement und Fernerkundung/S3_Prozesskette/06_AP4100/Code/shapes/thuringia.shp")
-
-## Pfad fuer Marlin:
-Thuringia <- readOGR("F:/GEO411_data/MODIS_R_dir/shape/thuringia.shp")
+## PAth for Shapefile:
+# Example Path: Thuringia <- readOGR("F:/GEO411_data/MODIS_R_dir/shape/thuringia.shp")
+Thuringia <- readOGR("")
 
 shapes <- as.list.data.frame(c(Thuringia))
 
@@ -129,11 +125,9 @@ shapes_n <- as.list.data.frame(c("Thuringia"))
 
 # ------------------------------------SET UP ENVIRONMENT------------------------------------------- #
 
-## Jonas working directory
-# workDir = "F:/411/LST/"
-
-## Marlin working directory
-workDir = "F:/GEO411_data/MODIS_R_dir/Downloaded_HDFs/"
+## Working directory
+# Example workDir = "F:/411/LST/"
+workDir = ""
 
 # Directory of the corresponding variable
 setwd(workDir)
@@ -190,11 +184,9 @@ for (i in 1:length(dirs)) {
 
 # ------------------------------------SET UP ENVIRONMENT------------------------------------------- #
 
-## Jonas working directory
-# workDir = "F:/411/LST/GeoTIFF/"
-
-## Marlin working directory
-workDir = "F:/GEO411_data/MODIS_R_dir/Downloaded_HDFs/GeoTIFF/"
+## Working directory
+# Example workDir = "F:/411/LST/GeoTIFF/"
+workDir = ""
 
 # Directory of the corresponding variable
 setwd(workDir)
