@@ -14,7 +14,7 @@
 ###------------------------------------------1st part---------------------------------------------###
 ###---------------------------CONVERSION INTO GEOTIFFS AND REPROJECTION---------------------------###
 
-# set environment language to english
+# Set environment language to english
 Sys.setenv(LANG = "en")
 
 # Load necessary packages into R
@@ -115,7 +115,7 @@ for (i in 1:length(dirs)) {
 
 # ------------------------------------READ IN THURINGIA SHAPEFILE---------------------------------- #
 
-## PAth for Shapefile:
+## Path for Shapefile:
 # Example Path: Thuringia <- readOGR("F:/GEO411_data/MODIS_R_dir/shape/thuringia.shp")
 Thuringia <- readOGR("")
 
@@ -236,5 +236,4 @@ for (i in 1:length(dirs)) {
 
 ###--------------------------------------------------------------------------------------------###
 ###--------------------------------------------------------------------------------------------###
-
 
