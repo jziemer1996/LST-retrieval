@@ -7,6 +7,9 @@
 # Modifided by: Marlin Mueller & Jonas Ziemer
 # ------------------------------------------------------------------------------------------------ #
 
+# set environment language to english
+Sys.setenv(LANG = "en")
+
 # Check for required packages, install if not previously installed
 if ("sys" %in% rownames(installed.packages()) == FALSE) {install.packages("sys")}
 if ("getPass" %in% rownames(installed.packages()) == FALSE) { install.packages("getPass")}

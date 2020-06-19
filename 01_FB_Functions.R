@@ -1,3 +1,6 @@
+# set environment language to english
+Sys.setenv(LANG = "en")
+
 # compute confusion matrix and kappa coefficient for two string vectors representing classification and reference respectively
 # this is done for the class overlap only
 accuracy=function(train,test){
