@@ -49,7 +49,7 @@ for (i in 1:length(dirs)) {
   dir.create("GeoTIFF",showWarnings = FALSE)
   
   # Layernames without raster types and date
-  files0 <- substr(gsub(".hdf", "", files), 1, nchar(gsub(".hdf", "", files)) - 14)
+  files0 <- substr(gsub(".hdf", "", files), 1, nchar(gsub(".hdf", "", files)))
   
   # Save names of subdatasets
   sds_names <- sub('.*\\:', '', get_subdatasets(files[1]))
@@ -98,7 +98,7 @@ for (i in 1:length(dirs)) {
         projected_raster <- projectRaster(r, crs = sr)
         
         # Write the RasterLayer to disk (See datatype documentation for other formats)
-        writeRaster(projected_raster, filename=paste0(outname, "_latlon_wgs84.tif"), datatype='FLT4S', overwrite=TRUE)
+        writeRaster(projected_raster, filename=paste0(outname, "_.tif"), datatype='FLT4S', overwrite=TRUE)
         
         # Remove unprojected files in working directory
         file.remove(outfile)
