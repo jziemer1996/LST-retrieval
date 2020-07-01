@@ -5,7 +5,7 @@
 # - 2nd part: Subsetting the MODIS files to the extent of Thuringia.
 # - 3rd part: Rescaling of LST values from Kelvin to Celsius.
 # ------------------------------------------------------------------------------------------------- #
-# Author: Sandra Bauer
+# Source: Sandra Bauer
 # Modified by: Marlin Mueller & Jonas Ziemer
 # FSU JENA, 2020
 # ------------------------------------------------------------------------------------------------- #
@@ -56,7 +56,7 @@ for (i in 1:length(dirs)) {
   print(sds_names)
   
   # Conversion into geotiff, corresponding to list of layer names
-  stand <- sprintf("Verzeichnis: %s", dirs[i])
+  stand <- sprintf("directory: %s", dirs[i])
   print(stand)
   
   # List of relevant SDS
@@ -139,7 +139,7 @@ for (i in 1:length(dirs)) {
   
   # Corresponding Geotiff directory
   setwd(paste0(workDir,dirs[i]))
-  stand <- sprintf("Verzeichnis: %s", dirs[i])
+  stand <- sprintf("directory: %s", dirs[i])
   print(stand)
   
   # Save list of all tif-files in directory
@@ -156,7 +156,7 @@ for (i in 1:length(dirs)) {
     big_extent <- extent(bigscene)
     big_e_sp <- as(big_extent, 'SpatialPolygons')
     crs(big_e_sp) <- crs(bigscene)
-    datei <- sprintf("Verzeichnis: %s Datei: %s von %s", dirs[i],a,length(files))
+    datei <- sprintf("directory: %s file: %s of %s", dirs[i],a,length(files))
     print(datei)
     
     for (x in 1:length(shapes)) {
@@ -204,7 +204,7 @@ for (i in 1:length(dirs)) {
   
   # Change directory to current used variable
   setwd(paste0(workDir,dirs[i]))
-  stand <- sprintf("Verzeichnis: %s", dirs[i])
+  stand <- sprintf("directory: %s", dirs[i])
   print(stand)
   
   # Save list of all .tif files
@@ -224,7 +224,7 @@ for (i in 1:length(dirs)) {
      file_scaled_to_celsius <- calc(file, fun=function(x){x-273.15})
      
      # Print progress
-     datei <- sprintf("Verzeichnis: %s Datei: %s von %s", dirs[i],a,length(files))
+     datei <- sprintf("directory: %s file: %s of %s", dirs[i],a,length(files))
      print(datei)
      
      # Convert and write new tif-file 
