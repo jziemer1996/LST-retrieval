@@ -5,7 +5,7 @@
 # - 2nd part: Subsetting the MODIS files to the extent of Thuringia.
 # - 3rd part: Rescaling of LST values from Kelvin to Celsius.
 # ------------------------------------------------------------------------------------------------- #
-# Source: Sandra Bauer
+# Source: Harald Lux & Christian Thau
 # Modified by: Marlin Mueller & Jonas Ziemer
 # FSU JENA, 2020
 # ------------------------------------------------------------------------------------------------- #
